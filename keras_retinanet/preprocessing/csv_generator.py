@@ -21,7 +21,6 @@ import numpy as np
 from PIL import Image
 from six import raise_from
 
-import cv2
 import csv
 
 
@@ -122,7 +121,8 @@ class CSVGenerator(Generator):
 
     def load_image(self, image_index):
         path = self.image_names[image_index]
-        return cv2.imread(path)
+        # Return image with channels reversed (BGR instead of RGB).
+        return np.asarray(Image.open(path))[:, :, ::-1]
 
     def load_annotations(self, image_index):
         path   = self.image_names[image_index]
